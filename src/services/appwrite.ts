@@ -139,10 +139,9 @@ export const assets = {
   },
 
   async list(userId: string) {
-    return await storage.listFiles(
-      config.assetsBucketId,
-      [Query.equal('$permissions', `read("user:${userId}")`)]
-    )
+    // Appwrite automatically filters files based on permissions
+    // No need to query by $permissions - just list all accessible files
+    return await storage.listFiles(config.assetsBucketId)
   },
 
   async delete(fileId: string) {
