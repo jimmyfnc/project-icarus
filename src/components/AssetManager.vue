@@ -16,7 +16,7 @@
           'border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors',
           isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
         ]"
-        @click="$refs.fileInput.click()"
+        @click="fileInput?.click()"
       >
         <div class="text-gray-600">
           <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
