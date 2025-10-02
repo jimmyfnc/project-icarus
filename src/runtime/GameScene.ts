@@ -243,11 +243,6 @@ export class GameScene extends Phaser.Scene {
     }
 
     this.isPlaying = false
-
-    // Automatically restart the game after reset
-    if (this.graph) {
-      this.play()
-    }
   }
 
   private createPlaceholderSprites() {

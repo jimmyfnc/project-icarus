@@ -8,5 +8,16 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'phaser': ['phaser'],
+          'vue-flow': ['@vue-flow/core', '@vue-flow/background', '@vue-flow/controls'],
+          'appwrite': ['appwrite']
+        }
+      }
+    }
   }
 })
