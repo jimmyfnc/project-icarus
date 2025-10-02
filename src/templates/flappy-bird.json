@@ -1,0 +1,229 @@
+{
+  "name": "Flappy Bird Clone",
+  "slug": "flappy-bird",
+  "description": "A simple Flappy Bird clone with tap-to-jump mechanics",
+  "isTemplate": true,
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "OnStart",
+        "position": { "x": 50, "y": 100 },
+        "data": {
+          "label": "On Start",
+          "properties": {}
+        }
+      },
+      {
+        "id": "spawn_bird",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 100 },
+        "data": {
+          "label": "Spawn Bird",
+          "properties": {
+            "sprite": "bird",
+            "x": 150,
+            "y": 300,
+            "entityId": "bird",
+            "hasGravity": true,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "apply_gravity",
+        "type": "ApplyGravity",
+        "position": { "x": 450, "y": 100 },
+        "data": {
+          "label": "Apply Gravity",
+          "properties": {
+            "entity": "bird",
+            "gravity": 800
+          }
+        }
+      },
+      {
+        "id": "spawn_ground",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 250 },
+        "data": {
+          "label": "Spawn Ground",
+          "properties": {
+            "sprite": "ground",
+            "x": 400,
+            "y": 568,
+            "entityId": "ground",
+            "isStatic": true,
+            "hasGravity": false
+          }
+        }
+      },
+      {
+        "id": "on_space",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 300 },
+        "data": {
+          "label": "On Space Key",
+          "properties": {
+            "key": "SPACE"
+          }
+        }
+      },
+      {
+        "id": "jump",
+        "type": "Impulse",
+        "position": { "x": 250, "y": 300 },
+        "data": {
+          "label": "Jump",
+          "properties": {
+            "entity": "bird",
+            "dx": 0,
+            "dy": -350
+          }
+        }
+      },
+      {
+        "id": "play_jump_sound",
+        "type": "PlaySound",
+        "position": { "x": 450, "y": 300 },
+        "data": {
+          "label": "Jump Sound",
+          "properties": {
+            "soundKey": "jump",
+            "volume": 0.5,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "spawn_pipes_timer",
+        "type": "Every",
+        "position": { "x": 50, "y": 450 },
+        "data": {
+          "label": "Spawn Pipes Every 2s",
+          "properties": {
+            "interval": 2000
+          }
+        }
+      },
+      {
+        "id": "spawn_pipe_top",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 450 },
+        "data": {
+          "label": "Spawn Pipe",
+          "properties": {
+            "sprite": "pipe",
+            "x": 900,
+            "y": 200,
+            "entityId": "",
+            "isStatic": false,
+            "hasGravity": false,
+            "tag": "pipe"
+          }
+        }
+      },
+      {
+        "id": "move_pipe_top",
+        "type": "Move",
+        "position": { "x": 450, "y": 450 },
+        "data": {
+          "label": "Move Pipe Left",
+          "properties": {
+            "entity": "",
+            "dx": -150,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "set_camera",
+        "type": "SetCameraFollow",
+        "position": { "x": 650, "y": 100 },
+        "data": {
+          "label": "Follow Bird",
+          "properties": {
+            "entity": "bird"
+          }
+        }
+      },
+      {
+        "id": "collide_bird_ground",
+        "type": "OnCollide",
+        "position": { "x": 50, "y": 600 },
+        "data": {
+          "label": "Bird-Ground Collision",
+          "properties": {
+            "entityA": "bird",
+            "entityB": "ground"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "start",
+        "sourceHandle": "exec",
+        "target": "spawn_bird",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e2",
+        "source": "spawn_bird",
+        "sourceHandle": "exec",
+        "target": "apply_gravity",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e3",
+        "source": "apply_gravity",
+        "sourceHandle": "exec",
+        "target": "spawn_ground",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e4",
+        "source": "spawn_ground",
+        "sourceHandle": "exec",
+        "target": "set_camera",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5",
+        "source": "on_space",
+        "sourceHandle": "exec",
+        "target": "jump",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5b",
+        "source": "jump",
+        "sourceHandle": "exec",
+        "target": "play_jump_sound",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6",
+        "source": "spawn_pipes_timer",
+        "sourceHandle": "exec",
+        "target": "spawn_pipe_top",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e7",
+        "source": "spawn_pipe_top",
+        "sourceHandle": "exec",
+        "target": "move_pipe_top",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e8",
+        "source": "spawn_pipe_top",
+        "sourceHandle": "entity",
+        "target": "move_pipe_top",
+        "targetHandle": "entity"
+      }
+    ]
+  }
+}

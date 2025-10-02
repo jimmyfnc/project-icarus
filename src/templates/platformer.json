@@ -1,0 +1,269 @@
+{
+  "name": "Mario-Style Platformer",
+  "slug": "platformer",
+  "description": "A simple side-scrolling platformer with left/right movement and jumping",
+  "isTemplate": true,
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "OnStart",
+        "position": { "x": 50, "y": 100 },
+        "data": {
+          "label": "On Start",
+          "properties": {}
+        }
+      },
+      {
+        "id": "spawn_player",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 100 },
+        "data": {
+          "label": "Spawn Player",
+          "properties": {
+            "sprite": "player",
+            "x": 100,
+            "y": 450,
+            "entityId": "player",
+            "hasGravity": true,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "apply_gravity",
+        "type": "ApplyGravity",
+        "position": { "x": 450, "y": 100 },
+        "data": {
+          "label": "Apply Gravity",
+          "properties": {
+            "entity": "player",
+            "gravity": 600
+          }
+        }
+      },
+      {
+        "id": "spawn_ground",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 100 },
+        "data": {
+          "label": "Spawn Ground",
+          "properties": {
+            "sprite": "ground",
+            "x": 400,
+            "y": 568,
+            "entityId": "ground",
+            "isStatic": true,
+            "hasGravity": false
+          }
+        }
+      },
+      {
+        "id": "spawn_platform1",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 220 },
+        "data": {
+          "label": "Spawn Platform 1",
+          "properties": {
+            "sprite": "platform",
+            "x": 300,
+            "y": 400,
+            "entityId": "platform1",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "platform"
+          }
+        }
+      },
+      {
+        "id": "spawn_platform2",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 340 },
+        "data": {
+          "label": "Spawn Platform 2",
+          "properties": {
+            "sprite": "platform",
+            "x": 500,
+            "y": 300,
+            "entityId": "platform2",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "platform"
+          }
+        }
+      },
+      {
+        "id": "set_camera",
+        "type": "SetCameraFollow",
+        "position": { "x": 850, "y": 100 },
+        "data": {
+          "label": "Follow Player",
+          "properties": {
+            "entity": "player"
+          }
+        }
+      },
+      {
+        "id": "on_left",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 300 },
+        "data": {
+          "label": "On Left Key",
+          "properties": {
+            "key": "LEFT"
+          }
+        }
+      },
+      {
+        "id": "move_left",
+        "type": "Move",
+        "position": { "x": 250, "y": 300 },
+        "data": {
+          "label": "Move Left",
+          "properties": {
+            "entity": "player",
+            "dx": -160,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "on_right",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 420 },
+        "data": {
+          "label": "On Right Key",
+          "properties": {
+            "key": "RIGHT"
+          }
+        }
+      },
+      {
+        "id": "move_right",
+        "type": "Move",
+        "position": { "x": 250, "y": 420 },
+        "data": {
+          "label": "Move Right",
+          "properties": {
+            "entity": "player",
+            "dx": 160,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "on_up",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 540 },
+        "data": {
+          "label": "On Up Key",
+          "properties": {
+            "key": "UP"
+          }
+        }
+      },
+      {
+        "id": "jump",
+        "type": "Impulse",
+        "position": { "x": 250, "y": 540 },
+        "data": {
+          "label": "Jump",
+          "properties": {
+            "entity": "player",
+            "dx": 0,
+            "dy": -400
+          }
+        }
+      },
+      {
+        "id": "collide_player_ground",
+        "type": "OnCollide",
+        "position": { "x": 50, "y": 660 },
+        "data": {
+          "label": "Player-Ground Collision",
+          "properties": {
+            "entityA": "player",
+            "entityB": "ground"
+          }
+        }
+      },
+      {
+        "id": "collide_player_platforms",
+        "type": "OnCollideWithTag",
+        "position": { "x": 50, "y": 760 },
+        "data": {
+          "label": "Player-Platform Collision (Tag)",
+          "properties": {
+            "entity": "player",
+            "tag": "platform"
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "start",
+        "sourceHandle": "exec",
+        "target": "spawn_player",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e2",
+        "source": "spawn_player",
+        "sourceHandle": "exec",
+        "target": "apply_gravity",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e3",
+        "source": "apply_gravity",
+        "sourceHandle": "exec",
+        "target": "spawn_ground",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e4",
+        "source": "spawn_ground",
+        "sourceHandle": "exec",
+        "target": "spawn_platform1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5",
+        "source": "spawn_platform1",
+        "sourceHandle": "exec",
+        "target": "spawn_platform2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6",
+        "source": "spawn_platform2",
+        "sourceHandle": "exec",
+        "target": "set_camera",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e7",
+        "source": "on_left",
+        "sourceHandle": "exec",
+        "target": "move_left",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e8",
+        "source": "on_right",
+        "sourceHandle": "exec",
+        "target": "move_right",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9",
+        "source": "on_up",
+        "sourceHandle": "exec",
+        "target": "jump",
+        "targetHandle": "exec"
+      }
+    ]
+  }
+}

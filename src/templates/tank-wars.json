@@ -1,0 +1,591 @@
+{
+  "name": "Tank Wars",
+  "slug": "tank-wars",
+  "description": "Turn-based artillery game with destructible terrain (Worms-style with tanks)",
+  "isTemplate": true,
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "OnStart",
+        "position": { "x": 50, "y": 100 },
+        "data": {
+          "label": "On Start",
+          "properties": {}
+        }
+      },
+      {
+        "id": "spawn_terrain",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 100 },
+        "data": {
+          "label": "Spawn Terrain",
+          "properties": {
+            "sprite": "terrain",
+            "x": 400,
+            "y": 500,
+            "entityId": "terrain",
+            "isStatic": true,
+            "hasGravity": false
+          }
+        }
+      },
+      {
+        "id": "spawn_tank1",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 100 },
+        "data": {
+          "label": "Spawn Tank 1 (Player)",
+          "properties": {
+            "sprite": "tank",
+            "x": 150,
+            "y": 380,
+            "entityId": "tank1",
+            "hasGravity": false,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "spawn_tank2",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 100 },
+        "data": {
+          "label": "Spawn Tank 2 (AI)",
+          "properties": {
+            "sprite": "tank",
+            "x": 650,
+            "y": 380,
+            "entityId": "tank2",
+            "hasGravity": false,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "init_current_turn",
+        "type": "SetVariable",
+        "position": { "x": 850, "y": 100 },
+        "data": {
+          "label": "Set Turn = 1",
+          "properties": {
+            "variable": "currentTurn",
+            "value": 1
+          }
+        }
+      },
+      {
+        "id": "init_tank1_health",
+        "type": "SetVariable",
+        "position": { "x": 1050, "y": 100 },
+        "data": {
+          "label": "Tank1 Health = 100",
+          "properties": {
+            "variable": "tank1Health",
+            "value": 100
+          }
+        }
+      },
+      {
+        "id": "init_tank2_health",
+        "type": "SetVariable",
+        "position": { "x": 1250, "y": 100 },
+        "data": {
+          "label": "Tank2 Health = 100",
+          "properties": {
+            "variable": "tank2Health",
+            "value": 100
+          }
+        }
+      },
+      {
+        "id": "on_space_shoot",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 300 },
+        "data": {
+          "label": "On Space (Shoot)",
+          "properties": {
+            "key": "SPACE"
+          }
+        }
+      },
+      {
+        "id": "check_turn_1",
+        "type": "CheckVariable",
+        "position": { "x": 250, "y": 300 },
+        "data": {
+          "label": "Is Turn 1?",
+          "properties": {
+            "variable": "currentTurn",
+            "value": 1
+          }
+        }
+      },
+      {
+        "id": "shoot_from_tank1",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 300 },
+        "data": {
+          "label": "Tank1 Shoots",
+          "properties": {
+            "sprite": "cannonball",
+            "x": 180,
+            "y": 370,
+            "entityId": "",
+            "hasGravity": true,
+            "collideWorldBounds": false,
+            "tag": "projectile"
+          }
+        }
+      },
+      {
+        "id": "launch_projectile_1",
+        "type": "Impulse",
+        "position": { "x": 650, "y": 300 },
+        "data": {
+          "label": "Launch (Simple Angle)",
+          "properties": {
+            "entity": "",
+            "dx": 300,
+            "dy": -250
+          }
+        }
+      },
+      {
+        "id": "apply_gravity_projectile_1",
+        "type": "ApplyGravity",
+        "position": { "x": 850, "y": 300 },
+        "data": {
+          "label": "Apply Gravity",
+          "properties": {
+            "entity": "",
+            "gravity": 400
+          }
+        }
+      },
+      {
+        "id": "play_shoot_sound_1",
+        "type": "PlaySound",
+        "position": { "x": 1050, "y": 300 },
+        "data": {
+          "label": "Cannon Sound",
+          "properties": {
+            "soundKey": "explosion",
+            "volume": 0.4,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "switch_turn_to_2",
+        "type": "SetVariable",
+        "position": { "x": 1250, "y": 300 },
+        "data": {
+          "label": "Switch to Turn 2",
+          "properties": {
+            "variable": "currentTurn",
+            "value": 2
+          }
+        }
+      },
+      {
+        "id": "on_enter_shoot_tank2",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 500 },
+        "data": {
+          "label": "On Enter (AI Turn)",
+          "properties": {
+            "key": "ENTER"
+          }
+        }
+      },
+      {
+        "id": "check_turn_2",
+        "type": "CheckVariable",
+        "position": { "x": 250, "y": 500 },
+        "data": {
+          "label": "Is Turn 2?",
+          "properties": {
+            "variable": "currentTurn",
+            "value": 2
+          }
+        }
+      },
+      {
+        "id": "shoot_from_tank2",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 500 },
+        "data": {
+          "label": "Tank2 Shoots",
+          "properties": {
+            "sprite": "cannonball",
+            "x": 620,
+            "y": 370,
+            "entityId": "",
+            "hasGravity": true,
+            "collideWorldBounds": false,
+            "tag": "projectile"
+          }
+        }
+      },
+      {
+        "id": "launch_projectile_2",
+        "type": "Impulse",
+        "position": { "x": 650, "y": 500 },
+        "data": {
+          "label": "Launch (Opposite)",
+          "properties": {
+            "entity": "",
+            "dx": -280,
+            "dy": -230
+          }
+        }
+      },
+      {
+        "id": "apply_gravity_projectile_2",
+        "type": "ApplyGravity",
+        "position": { "x": 850, "y": 500 },
+        "data": {
+          "label": "Apply Gravity",
+          "properties": {
+            "entity": "",
+            "gravity": 400
+          }
+        }
+      },
+      {
+        "id": "play_shoot_sound_2",
+        "type": "PlaySound",
+        "position": { "x": 1050, "y": 500 },
+        "data": {
+          "label": "Cannon Sound",
+          "properties": {
+            "soundKey": "explosion",
+            "volume": 0.4,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "switch_turn_to_1",
+        "type": "SetVariable",
+        "position": { "x": 1250, "y": 500 },
+        "data": {
+          "label": "Switch to Turn 1",
+          "properties": {
+            "variable": "currentTurn",
+            "value": 1
+          }
+        }
+      },
+      {
+        "id": "projectile_hit_tank1",
+        "type": "OnCollide",
+        "position": { "x": 50, "y": 700 },
+        "data": {
+          "label": "Projectile Hits Tank1",
+          "properties": {
+            "entityA": "",
+            "entityB": "tank1"
+          }
+        }
+      },
+      {
+        "id": "damage_tank1",
+        "type": "SetVariable",
+        "position": { "x": 250, "y": 700 },
+        "data": {
+          "label": "Tank1 -50 HP",
+          "properties": {
+            "variable": "tank1Health",
+            "value": -50
+          }
+        }
+      },
+      {
+        "id": "destroy_projectile_1",
+        "type": "Destroy",
+        "position": { "x": 450, "y": 700 },
+        "data": {
+          "label": "Destroy Projectile",
+          "properties": {
+            "entity": ""
+          }
+        }
+      },
+      {
+        "id": "play_hit_sound_1",
+        "type": "PlaySound",
+        "position": { "x": 650, "y": 700 },
+        "data": {
+          "label": "Hit Sound",
+          "properties": {
+            "soundKey": "explosion",
+            "volume": 0.6,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "projectile_hit_tank2",
+        "type": "OnCollide",
+        "position": { "x": 50, "y": 850 },
+        "data": {
+          "label": "Projectile Hits Tank2",
+          "properties": {
+            "entityA": "",
+            "entityB": "tank2"
+          }
+        }
+      },
+      {
+        "id": "damage_tank2",
+        "type": "SetVariable",
+        "position": { "x": 250, "y": 850 },
+        "data": {
+          "label": "Tank2 -50 HP",
+          "properties": {
+            "variable": "tank2Health",
+            "value": -50
+          }
+        }
+      },
+      {
+        "id": "destroy_projectile_2",
+        "type": "Destroy",
+        "position": { "x": 450, "y": 850 },
+        "data": {
+          "label": "Destroy Projectile",
+          "properties": {
+            "entity": ""
+          }
+        }
+      },
+      {
+        "id": "play_hit_sound_2",
+        "type": "PlaySound",
+        "position": { "x": 650, "y": 850 },
+        "data": {
+          "label": "Hit Sound",
+          "properties": {
+            "soundKey": "explosion",
+            "volume": 0.6,
+            "loop": false
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "start",
+        "sourceHandle": "exec",
+        "target": "spawn_terrain",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e2",
+        "source": "spawn_terrain",
+        "sourceHandle": "exec",
+        "target": "spawn_tank1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e3",
+        "source": "spawn_tank1",
+        "sourceHandle": "exec",
+        "target": "spawn_tank2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e4",
+        "source": "spawn_tank2",
+        "sourceHandle": "exec",
+        "target": "init_current_turn",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5",
+        "source": "init_current_turn",
+        "sourceHandle": "exec",
+        "target": "init_tank1_health",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6",
+        "source": "init_tank1_health",
+        "sourceHandle": "exec",
+        "target": "init_tank2_health",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e7",
+        "source": "on_space_shoot",
+        "sourceHandle": "exec",
+        "target": "check_turn_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e8",
+        "source": "check_turn_1",
+        "sourceHandle": "true",
+        "target": "shoot_from_tank1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9",
+        "source": "shoot_from_tank1",
+        "sourceHandle": "exec",
+        "target": "launch_projectile_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9b",
+        "source": "shoot_from_tank1",
+        "sourceHandle": "entity",
+        "target": "launch_projectile_1",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e10",
+        "source": "launch_projectile_1",
+        "sourceHandle": "exec",
+        "target": "apply_gravity_projectile_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e10b",
+        "source": "launch_projectile_1",
+        "sourceHandle": "entity",
+        "target": "apply_gravity_projectile_1",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e11",
+        "source": "apply_gravity_projectile_1",
+        "sourceHandle": "exec",
+        "target": "play_shoot_sound_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e12",
+        "source": "play_shoot_sound_1",
+        "sourceHandle": "exec",
+        "target": "switch_turn_to_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e13",
+        "source": "on_enter_shoot_tank2",
+        "sourceHandle": "exec",
+        "target": "check_turn_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e14",
+        "source": "check_turn_2",
+        "sourceHandle": "true",
+        "target": "shoot_from_tank2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e15",
+        "source": "shoot_from_tank2",
+        "sourceHandle": "exec",
+        "target": "launch_projectile_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e15b",
+        "source": "shoot_from_tank2",
+        "sourceHandle": "entity",
+        "target": "launch_projectile_2",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e16",
+        "source": "launch_projectile_2",
+        "sourceHandle": "exec",
+        "target": "apply_gravity_projectile_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e16b",
+        "source": "launch_projectile_2",
+        "sourceHandle": "entity",
+        "target": "apply_gravity_projectile_2",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e17",
+        "source": "apply_gravity_projectile_2",
+        "sourceHandle": "exec",
+        "target": "play_shoot_sound_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e18",
+        "source": "play_shoot_sound_2",
+        "sourceHandle": "exec",
+        "target": "switch_turn_to_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e19",
+        "source": "projectile_hit_tank1",
+        "sourceHandle": "exec",
+        "target": "damage_tank1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e20",
+        "source": "damage_tank1",
+        "sourceHandle": "exec",
+        "target": "destroy_projectile_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e20b",
+        "source": "projectile_hit_tank1",
+        "sourceHandle": "entityA",
+        "target": "destroy_projectile_1",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e21",
+        "source": "destroy_projectile_1",
+        "sourceHandle": "exec",
+        "target": "play_hit_sound_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e22",
+        "source": "projectile_hit_tank2",
+        "sourceHandle": "exec",
+        "target": "damage_tank2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e23",
+        "source": "damage_tank2",
+        "sourceHandle": "exec",
+        "target": "destroy_projectile_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e23b",
+        "source": "projectile_hit_tank2",
+        "sourceHandle": "entityA",
+        "target": "destroy_projectile_2",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e24",
+        "source": "destroy_projectile_2",
+        "sourceHandle": "exec",
+        "target": "play_hit_sound_2",
+        "targetHandle": "exec"
+      }
+    ]
+  }
+}

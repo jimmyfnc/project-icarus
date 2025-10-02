@@ -1,0 +1,637 @@
+{
+  "name": "Breakout",
+  "slug": "breakout",
+  "description": "Classic brick breaker game with paddle and ball physics",
+  "isTemplate": true,
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "OnStart",
+        "position": { "x": 50, "y": 100 },
+        "data": {
+          "label": "On Start",
+          "properties": {}
+        }
+      },
+      {
+        "id": "spawn_paddle",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 100 },
+        "data": {
+          "label": "Spawn Paddle",
+          "properties": {
+            "sprite": "paddle",
+            "x": 400,
+            "y": 560,
+            "entityId": "paddle",
+            "isStatic": false,
+            "hasGravity": false,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "spawn_ball",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 100 },
+        "data": {
+          "label": "Spawn Ball",
+          "properties": {
+            "sprite": "ball",
+            "x": 400,
+            "y": 400,
+            "entityId": "ball",
+            "hasGravity": false,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "apply_ball_velocity",
+        "type": "Move",
+        "position": { "x": 650, "y": 100 },
+        "data": {
+          "label": "Launch Ball",
+          "properties": {
+            "entity": "ball",
+            "dx": 150,
+            "dy": -200
+          }
+        }
+      },
+      {
+        "id": "init_score",
+        "type": "SetVariable",
+        "position": { "x": 850, "y": 100 },
+        "data": {
+          "label": "Init Score",
+          "properties": {
+            "variable": "score",
+            "value": 0
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_1_1",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 280 },
+        "data": {
+          "label": "Brick 1-1",
+          "properties": {
+            "sprite": "brick",
+            "x": 150,
+            "y": 100,
+            "entityId": "brick_1_1",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_1_2",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 280 },
+        "data": {
+          "label": "Brick 1-2",
+          "properties": {
+            "sprite": "brick",
+            "x": 230,
+            "y": 100,
+            "entityId": "brick_1_2",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_1_3",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 280 },
+        "data": {
+          "label": "Brick 1-3",
+          "properties": {
+            "sprite": "brick",
+            "x": 310,
+            "y": 100,
+            "entityId": "brick_1_3",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_1_4",
+        "type": "Spawn",
+        "position": { "x": 850, "y": 280 },
+        "data": {
+          "label": "Brick 1-4",
+          "properties": {
+            "sprite": "brick",
+            "x": 390,
+            "y": 100,
+            "entityId": "brick_1_4",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_1_5",
+        "type": "Spawn",
+        "position": { "x": 1050, "y": 280 },
+        "data": {
+          "label": "Brick 1-5",
+          "properties": {
+            "sprite": "brick",
+            "x": 470,
+            "y": 100,
+            "entityId": "brick_1_5",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_2_1",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 400 },
+        "data": {
+          "label": "Brick 2-1",
+          "properties": {
+            "sprite": "brick",
+            "x": 150,
+            "y": 140,
+            "entityId": "brick_2_1",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_2_2",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 400 },
+        "data": {
+          "label": "Brick 2-2",
+          "properties": {
+            "sprite": "brick",
+            "x": 230,
+            "y": 140,
+            "entityId": "brick_2_2",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_2_3",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 400 },
+        "data": {
+          "label": "Brick 2-3",
+          "properties": {
+            "sprite": "brick",
+            "x": 310,
+            "y": 140,
+            "entityId": "brick_2_3",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_2_4",
+        "type": "Spawn",
+        "position": { "x": 850, "y": 400 },
+        "data": {
+          "label": "Brick 2-4",
+          "properties": {
+            "sprite": "brick",
+            "x": 390,
+            "y": 140,
+            "entityId": "brick_2_4",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_2_5",
+        "type": "Spawn",
+        "position": { "x": 1050, "y": 400 },
+        "data": {
+          "label": "Brick 2-5",
+          "properties": {
+            "sprite": "brick",
+            "x": 470,
+            "y": 140,
+            "entityId": "brick_2_5",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_3_1",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 520 },
+        "data": {
+          "label": "Brick 3-1",
+          "properties": {
+            "sprite": "brick",
+            "x": 150,
+            "y": 180,
+            "entityId": "brick_3_1",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_3_2",
+        "type": "Spawn",
+        "position": { "x": 450, "y": 520 },
+        "data": {
+          "label": "Brick 3-2",
+          "properties": {
+            "sprite": "brick",
+            "x": 230,
+            "y": 180,
+            "entityId": "brick_3_2",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_3_3",
+        "type": "Spawn",
+        "position": { "x": 650, "y": 520 },
+        "data": {
+          "label": "Brick 3-3",
+          "properties": {
+            "sprite": "brick",
+            "x": 310,
+            "y": 180,
+            "entityId": "brick_3_3",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_3_4",
+        "type": "Spawn",
+        "position": { "x": 850, "y": 520 },
+        "data": {
+          "label": "Brick 3-4",
+          "properties": {
+            "sprite": "brick",
+            "x": 390,
+            "y": 180,
+            "entityId": "brick_3_4",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "spawn_brick_3_5",
+        "type": "Spawn",
+        "position": { "x": 1050, "y": 520 },
+        "data": {
+          "label": "Brick 3-5",
+          "properties": {
+            "sprite": "brick",
+            "x": 470,
+            "y": 180,
+            "entityId": "brick_3_5",
+            "isStatic": true,
+            "hasGravity": false,
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "on_left",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 700 },
+        "data": {
+          "label": "On Left Key",
+          "properties": {
+            "key": "LEFT"
+          }
+        }
+      },
+      {
+        "id": "move_paddle_left",
+        "type": "Move",
+        "position": { "x": 250, "y": 700 },
+        "data": {
+          "label": "Move Paddle Left",
+          "properties": {
+            "entity": "paddle",
+            "dx": -300,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "on_right",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 820 },
+        "data": {
+          "label": "On Right Key",
+          "properties": {
+            "key": "RIGHT"
+          }
+        }
+      },
+      {
+        "id": "move_paddle_right",
+        "type": "Move",
+        "position": { "x": 250, "y": 820 },
+        "data": {
+          "label": "Move Paddle Right",
+          "properties": {
+            "entity": "paddle",
+            "dx": 300,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "ball_hit_brick",
+        "type": "OnCollideWithTag",
+        "position": { "x": 50, "y": 960 },
+        "data": {
+          "label": "Ball Hits Brick",
+          "properties": {
+            "entity": "ball",
+            "tag": "brick"
+          }
+        }
+      },
+      {
+        "id": "destroy_brick",
+        "type": "Destroy",
+        "position": { "x": 250, "y": 960 },
+        "data": {
+          "label": "Destroy Brick",
+          "properties": {
+            "entity": ""
+          }
+        }
+      },
+      {
+        "id": "increment_score",
+        "type": "SetVariable",
+        "position": { "x": 450, "y": 960 },
+        "data": {
+          "label": "Add 10 Score",
+          "properties": {
+            "variable": "score",
+            "value": 10
+          }
+        }
+      },
+      {
+        "id": "play_brick_break",
+        "type": "PlaySound",
+        "position": { "x": 650, "y": 960 },
+        "data": {
+          "label": "Brick Break Sound",
+          "properties": {
+            "soundKey": "coin",
+            "volume": 0.5,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "ball_hit_paddle",
+        "type": "OnCollide",
+        "position": { "x": 50, "y": 1100 },
+        "data": {
+          "label": "Ball Hits Paddle",
+          "properties": {
+            "entityA": "ball",
+            "entityB": "paddle"
+          }
+        }
+      },
+      {
+        "id": "play_paddle_sound",
+        "type": "PlaySound",
+        "position": { "x": 250, "y": 1100 },
+        "data": {
+          "label": "Paddle Hit Sound",
+          "properties": {
+            "soundKey": "jump",
+            "volume": 0.3,
+            "loop": false
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "start",
+        "sourceHandle": "exec",
+        "target": "spawn_paddle",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e2",
+        "source": "spawn_paddle",
+        "sourceHandle": "exec",
+        "target": "spawn_ball",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e3",
+        "source": "spawn_ball",
+        "sourceHandle": "exec",
+        "target": "apply_ball_velocity",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e4",
+        "source": "apply_ball_velocity",
+        "sourceHandle": "exec",
+        "target": "init_score",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5",
+        "source": "init_score",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_1_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6",
+        "source": "spawn_brick_1_1",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_1_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e7",
+        "source": "spawn_brick_1_2",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_1_3",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e8",
+        "source": "spawn_brick_1_3",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_1_4",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9",
+        "source": "spawn_brick_1_4",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_1_5",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e10",
+        "source": "spawn_brick_1_5",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_2_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e11",
+        "source": "spawn_brick_2_1",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_2_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e12",
+        "source": "spawn_brick_2_2",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_2_3",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e13",
+        "source": "spawn_brick_2_3",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_2_4",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e14",
+        "source": "spawn_brick_2_4",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_2_5",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e15",
+        "source": "spawn_brick_2_5",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_3_1",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e16",
+        "source": "spawn_brick_3_1",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_3_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e17",
+        "source": "spawn_brick_3_2",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_3_3",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e18",
+        "source": "spawn_brick_3_3",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_3_4",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e19",
+        "source": "spawn_brick_3_4",
+        "sourceHandle": "exec",
+        "target": "spawn_brick_3_5",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e20",
+        "source": "on_left",
+        "sourceHandle": "exec",
+        "target": "move_paddle_left",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e21",
+        "source": "on_right",
+        "sourceHandle": "exec",
+        "target": "move_paddle_right",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e22",
+        "source": "ball_hit_brick",
+        "sourceHandle": "exec",
+        "target": "destroy_brick",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e22b",
+        "source": "ball_hit_brick",
+        "sourceHandle": "collidedWith",
+        "target": "destroy_brick",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e23",
+        "source": "destroy_brick",
+        "sourceHandle": "exec",
+        "target": "increment_score",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e24",
+        "source": "increment_score",
+        "sourceHandle": "exec",
+        "target": "play_brick_break",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e25",
+        "source": "ball_hit_paddle",
+        "sourceHandle": "exec",
+        "target": "play_paddle_sound",
+        "targetHandle": "exec"
+      }
+    ]
+  }
+}

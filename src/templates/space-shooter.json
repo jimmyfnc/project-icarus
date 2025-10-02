@@ -1,0 +1,370 @@
+{
+  "name": "Space Shooter",
+  "slug": "space-shooter",
+  "description": "Classic arcade vertical space shooter with enemies and shooting mechanics",
+  "isTemplate": true,
+  "graph": {
+    "nodes": [
+      {
+        "id": "start",
+        "type": "OnStart",
+        "position": { "x": 50, "y": 100 },
+        "data": {
+          "label": "On Start",
+          "properties": {}
+        }
+      },
+      {
+        "id": "spawn_ship",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 100 },
+        "data": {
+          "label": "Spawn Ship",
+          "properties": {
+            "sprite": "ship",
+            "x": 400,
+            "y": 520,
+            "entityId": "ship",
+            "hasGravity": false,
+            "collideWorldBounds": true
+          }
+        }
+      },
+      {
+        "id": "init_score",
+        "type": "SetVariable",
+        "position": { "x": 450, "y": 100 },
+        "data": {
+          "label": "Init Score",
+          "properties": {
+            "variable": "score",
+            "value": 0
+          }
+        }
+      },
+      {
+        "id": "on_left",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 250 },
+        "data": {
+          "label": "On Left Key",
+          "properties": {
+            "key": "LEFT"
+          }
+        }
+      },
+      {
+        "id": "move_left",
+        "type": "Move",
+        "position": { "x": 250, "y": 250 },
+        "data": {
+          "label": "Move Left",
+          "properties": {
+            "entity": "ship",
+            "dx": -250,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "on_right",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 370 },
+        "data": {
+          "label": "On Right Key",
+          "properties": {
+            "key": "RIGHT"
+          }
+        }
+      },
+      {
+        "id": "move_right",
+        "type": "Move",
+        "position": { "x": 250, "y": 370 },
+        "data": {
+          "label": "Move Right",
+          "properties": {
+            "entity": "ship",
+            "dx": 250,
+            "dy": 0
+          }
+        }
+      },
+      {
+        "id": "on_space",
+        "type": "OnKey",
+        "position": { "x": 50, "y": 490 },
+        "data": {
+          "label": "On Space (Shoot)",
+          "properties": {
+            "key": "SPACE"
+          }
+        }
+      },
+      {
+        "id": "spawn_bullet",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 490 },
+        "data": {
+          "label": "Spawn Bullet",
+          "properties": {
+            "sprite": "bullet",
+            "x": 400,
+            "y": 500,
+            "entityId": "",
+            "hasGravity": false,
+            "collideWorldBounds": false,
+            "tag": "bullet"
+          }
+        }
+      },
+      {
+        "id": "move_bullet",
+        "type": "Move",
+        "position": { "x": 450, "y": 490 },
+        "data": {
+          "label": "Move Bullet Up",
+          "properties": {
+            "entity": "",
+            "dx": 0,
+            "dy": -400
+          }
+        }
+      },
+      {
+        "id": "play_shoot_sound",
+        "type": "PlaySound",
+        "position": { "x": 650, "y": 490 },
+        "data": {
+          "label": "Shoot Sound",
+          "properties": {
+            "soundKey": "jump",
+            "volume": 0.3,
+            "loop": false
+          }
+        }
+      },
+      {
+        "id": "spawn_enemies_timer",
+        "type": "Every",
+        "position": { "x": 50, "y": 640 },
+        "data": {
+          "label": "Spawn Enemy Every 2s",
+          "properties": {
+            "interval": 2000
+          }
+        }
+      },
+      {
+        "id": "spawn_enemy",
+        "type": "Spawn",
+        "position": { "x": 250, "y": 640 },
+        "data": {
+          "label": "Spawn Enemy",
+          "properties": {
+            "sprite": "enemy",
+            "x": 400,
+            "y": 50,
+            "entityId": "",
+            "hasGravity": false,
+            "collideWorldBounds": false,
+            "tag": "enemy"
+          }
+        }
+      },
+      {
+        "id": "move_enemy",
+        "type": "Move",
+        "position": { "x": 450, "y": 640 },
+        "data": {
+          "label": "Move Enemy Down",
+          "properties": {
+            "entity": "",
+            "dx": 0,
+            "dy": 100
+          }
+        }
+      },
+      {
+        "id": "bullet_hit_enemy",
+        "type": "OnCollideWithTag",
+        "position": { "x": 50, "y": 780 },
+        "data": {
+          "label": "Bullet Hits Enemy",
+          "properties": {
+            "entity": "",
+            "tag": "enemy"
+          }
+        }
+      },
+      {
+        "id": "destroy_bullet",
+        "type": "Destroy",
+        "position": { "x": 250, "y": 780 },
+        "data": {
+          "label": "Destroy Bullet",
+          "properties": {
+            "entity": ""
+          }
+        }
+      },
+      {
+        "id": "destroy_enemy",
+        "type": "Destroy",
+        "position": { "x": 450, "y": 780 },
+        "data": {
+          "label": "Destroy Enemy",
+          "properties": {
+            "entity": ""
+          }
+        }
+      },
+      {
+        "id": "increment_score",
+        "type": "SetVariable",
+        "position": { "x": 650, "y": 780 },
+        "data": {
+          "label": "Add 10 Score",
+          "properties": {
+            "variable": "score",
+            "value": 10
+          }
+        }
+      },
+      {
+        "id": "play_explosion_sound",
+        "type": "PlaySound",
+        "position": { "x": 850, "y": 780 },
+        "data": {
+          "label": "Explosion Sound",
+          "properties": {
+            "soundKey": "explosion",
+            "volume": 0.4,
+            "loop": false
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e1",
+        "source": "start",
+        "sourceHandle": "exec",
+        "target": "spawn_ship",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e2",
+        "source": "spawn_ship",
+        "sourceHandle": "exec",
+        "target": "init_score",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e3",
+        "source": "on_left",
+        "sourceHandle": "exec",
+        "target": "move_left",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e4",
+        "source": "on_right",
+        "sourceHandle": "exec",
+        "target": "move_right",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5",
+        "source": "on_space",
+        "sourceHandle": "exec",
+        "target": "spawn_bullet",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6",
+        "source": "spawn_bullet",
+        "sourceHandle": "exec",
+        "target": "move_bullet",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e6b",
+        "source": "spawn_bullet",
+        "sourceHandle": "entity",
+        "target": "move_bullet",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e7",
+        "source": "move_bullet",
+        "sourceHandle": "exec",
+        "target": "play_shoot_sound",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e8",
+        "source": "spawn_enemies_timer",
+        "sourceHandle": "exec",
+        "target": "spawn_enemy",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9",
+        "source": "spawn_enemy",
+        "sourceHandle": "exec",
+        "target": "move_enemy",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9b",
+        "source": "spawn_enemy",
+        "sourceHandle": "entity",
+        "target": "move_enemy",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e10",
+        "source": "bullet_hit_enemy",
+        "sourceHandle": "exec",
+        "target": "destroy_bullet",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e10b",
+        "source": "bullet_hit_enemy",
+        "sourceHandle": "entity",
+        "target": "destroy_bullet",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e11",
+        "source": "destroy_bullet",
+        "sourceHandle": "exec",
+        "target": "destroy_enemy",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e11b",
+        "source": "bullet_hit_enemy",
+        "sourceHandle": "collidedWith",
+        "target": "destroy_enemy",
+        "targetHandle": "entity"
+      },
+      {
+        "id": "e12",
+        "source": "destroy_enemy",
+        "sourceHandle": "exec",
+        "target": "increment_score",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e13",
+        "source": "increment_score",
+        "sourceHandle": "exec",
+        "target": "play_explosion_sound",
+        "targetHandle": "exec"
+      }
+    ]
+  }
+}
