@@ -1,4 +1,5 @@
 <template>
+  <!-- Asset Upload System Integrated -->
   <div class="h-screen flex flex-col bg-gray-100">
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
