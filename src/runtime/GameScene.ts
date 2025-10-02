@@ -37,6 +37,35 @@ export class GameScene extends Phaser.Scene {
   preload() {
     // Create placeholder sprites
     this.createPlaceholderSprites()
+
+    // Preload any custom asset sprites from the graph
+    if (this.graph) {
+      this.preloadCustomAssets()
+    }
+  }
+
+  private preloadCustomAssets() {
+    if (!this.graph) return
+
+    // Find all Spawn nodes with custom assets
+    const spawnNodes = this.graph.nodes.filter(n => n.type === 'Spawn')
+
+    spawnNodes.forEach(node => {
+      const sprite = node.data.properties.sprite
+      if (sprite && sprite.startsWith('asset:')) {
+        const assetId = sprite.replace('asset:', '')
+        // Load the asset from Appwrite
+        const assetUrl = this.getAssetUrl(assetId)
+        this.load.image(sprite, assetUrl)
+      }
+    })
+  }
+
+  private getAssetUrl(assetId: string): string {
+    const endpoint = import.meta.env.VITE_APPWRITE_ENDPOINT
+    const projectId = import.meta.env.VITE_APPWRITE_PROJECT_ID
+    const bucketId = import.meta.env.VITE_APPWRITE_ASSETS_BUCKET_ID || 'assets'
+    return `${endpoint}/storage/buckets/${bucketId}/files/${assetId}/view?project=${projectId}`
   }
 
   create() {

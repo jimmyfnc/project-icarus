@@ -66,21 +66,31 @@
             @change="updateProperties"
             class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
           >
-            <option value="player">Player</option>
-            <option value="enemy">Enemy</option>
-            <option value="bird">Bird</option>
-            <option value="pipe">Pipe</option>
-            <option value="ground">Ground</option>
-            <option value="platform">Platform</option>
-            <option value="ship">Ship</option>
-            <option value="bullet">Bullet</option>
-            <option value="paddle">Paddle</option>
-            <option value="ball">Ball</option>
-            <option value="brick">Brick</option>
-            <option value="tank">Tank</option>
-            <option value="cannonball">Cannonball</option>
-            <option value="terrain">Terrain</option>
+            <optgroup label="Built-in Sprites">
+              <option value="player">Player</option>
+              <option value="enemy">Enemy</option>
+              <option value="bird">Bird</option>
+              <option value="pipe">Pipe</option>
+              <option value="ground">Ground</option>
+              <option value="platform">Platform</option>
+              <option value="ship">Ship</option>
+              <option value="bullet">Bullet</option>
+              <option value="paddle">Paddle</option>
+              <option value="ball">Ball</option>
+              <option value="brick">Brick</option>
+              <option value="tank">Tank</option>
+              <option value="cannonball">Cannonball</option>
+              <option value="terrain">Terrain</option>
+            </optgroup>
+            <optgroup v-if="assetStore.imageAssets.length > 0" label="Uploaded Assets">
+              <option v-for="asset in assetStore.imageAssets" :key="asset.$id" :value="`asset:${asset.$id}`">
+                {{ asset.name }}
+              </option>
+            </optgroup>
           </select>
+          <p v-if="properties.sprite?.startsWith('asset:')" class="text-xs text-blue-600">
+            Using custom asset
+          </p>
 
           <label class="block text-sm font-medium text-gray-700">
             X Position
@@ -866,12 +876,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
+import { computed, reactive, watch, onMounted } from 'vue'
 import { useEditorStore } from '@/stores/editorStore'
+import { useAssetStore } from '@/stores/assetStore'
+import { useAuthStore } from '@/stores/authStore'
 import { NodeRegistry } from '@/runtime/NodeRegistry'
 import EntitySelect from './EntitySelect.vue'
 
 const editorStore = useEditorStore()
+const assetStore = useAssetStore()
+const authStore = useAuthStore()
+
+// Load assets when component mounts
+onMounted(async () => {
+  if (authStore.isAuthenticated) {
+    await assetStore.fetchAssets()
+  }
+})
 
 const selectedNode = computed(() => editorStore.selectedNode)
 const nodeEntry = computed(() => {

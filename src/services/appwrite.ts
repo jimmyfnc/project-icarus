@@ -1,4 +1,4 @@
-import { Client, Account, Databases, ID, Query, Permission, Role, type Models } from 'appwrite'
+import { Client, Account, Databases, Storage, ID, Query, Permission, Role, type Models } from 'appwrite'
 
 // Initialize Appwrite client
 const client = new Client()
@@ -7,11 +7,13 @@ const client = new Client()
 
 export const account = new Account(client)
 export const databases = new Databases(client)
+export const storage = new Storage(client)
 
 // Configuration
 export const config = {
   databaseId: import.meta.env.VITE_APPWRITE_DATABASE_ID,
-  projectsCollectionId: import.meta.env.VITE_APPWRITE_COLLECTION_ID
+  projectsCollectionId: import.meta.env.VITE_APPWRITE_COLLECTION_ID,
+  assetsBucketId: import.meta.env.VITE_APPWRITE_ASSETS_BUCKET_ID || 'assets'
 }
 
 // Types
@@ -119,5 +121,39 @@ export const projects = {
       config.projectsCollectionId,
       projectId
     )
+  }
+}
+
+// Asset Storage
+export const assets = {
+  async upload(file: File, userId: string) {
+    return await storage.createFile(
+      config.assetsBucketId,
+      ID.unique(),
+      file,
+      [
+        Permission.read(Role.user(userId)),
+        Permission.delete(Role.user(userId))
+      ]
+    )
+  },
+
+  async list(userId: string) {
+    return await storage.listFiles(
+      config.assetsBucketId,
+      [Query.equal('$permissions', `read("user:${userId}")`)]
+    )
+  },
+
+  async delete(fileId: string) {
+    return await storage.deleteFile(config.assetsBucketId, fileId)
+  },
+
+  getFileUrl(fileId: string) {
+    return `${import.meta.env.VITE_APPWRITE_ENDPOINT}/storage/buckets/${config.assetsBucketId}/files/${fileId}/view?project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}`
+  },
+
+  getFilePreview(fileId: string, width = 100, height = 100) {
+    return `${import.meta.env.VITE_APPWRITE_ENDPOINT}/storage/buckets/${config.assetsBucketId}/files/${fileId}/preview?width=${width}&height=${height}&project=${import.meta.env.VITE_APPWRITE_PROJECT_ID}`
   }
 }

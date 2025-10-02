@@ -11,6 +11,13 @@
 
       <div class="flex items-center gap-2">
         <button
+          @click="showAssets = !showAssets"
+          :class="showAssets ? 'bg-purple-600 hover:bg-purple-700' : 'bg-gray-600 hover:bg-gray-700'"
+          class="px-4 py-2 text-white rounded text-sm font-medium"
+        >
+          📦 Assets
+        </button>
+        <button
           @click="saveProject"
           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium"
         >
@@ -58,9 +65,10 @@
         </div>
       </main>
 
-      <!-- Right Sidebar - Properties -->
+      <!-- Right Sidebar - Properties / Assets -->
       <aside class="w-80 bg-white border-l border-gray-200 overflow-y-auto">
-        <PropertiesPanel />
+        <PropertiesPanel v-if="!showAssets" />
+        <AssetManager v-else />
       </aside>
     </div>
   </div>
@@ -76,11 +84,13 @@ import NodePalette from '@/components/NodePalette.vue'
 import GraphCanvas from '@/components/GraphCanvas.vue'
 import PropertiesPanel from '@/components/PropertiesPanel.vue'
 import GamePreview from '@/components/GamePreview.vue'
+import AssetManager from '@/components/AssetManager.vue'
 
 const editorStore = useEditorStore()
 const projectStore = useProjectStore()
 const authStore = useAuthStore()
 const previewExpanded = ref(false)
+const showAssets = ref(false)
 const openAuthModal = inject<() => void>('openAuthModal')!
 
 function togglePreviewSize() {
