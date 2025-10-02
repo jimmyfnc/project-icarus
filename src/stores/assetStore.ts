@@ -43,7 +43,9 @@ export const useAssetStore = defineStore('asset', () => {
 
   async function fetchAssets() {
     if (!authStore.userId) {
-      error.value = 'Not authenticated'
+      // Don't show error if not authenticated - just clear files
+      error.value = null
+      files.value = []
       return
     }
 
@@ -56,6 +58,7 @@ export const useAssetStore = defineStore('asset', () => {
     } catch (e: any) {
       console.error('Failed to fetch assets:', e)
       error.value = e.message || 'Failed to fetch assets'
+      files.value = [] // Clear files on error
     } finally {
       loading.value = false
     }

@@ -890,7 +890,12 @@ const authStore = useAuthStore()
 // Load assets when component mounts
 onMounted(async () => {
   if (authStore.isAuthenticated) {
-    await assetStore.fetchAssets()
+    try {
+      await assetStore.fetchAssets()
+    } catch (e) {
+      console.error('Failed to load assets in PropertiesPanel:', e)
+      // Continue anyway - UI will work without assets
+    }
   }
 })
 
