@@ -22,8 +22,26 @@
     </header>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center p-8">
-      <div class="max-w-4xl w-full">
+    <div class="flex-1 overflow-y-auto p-8">
+      <div class="max-w-6xl mx-auto">
+        <!-- My Projects Section -->
+        <div v-if="authStore.isAuthenticated && projectStore.projects.length > 0" class="mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">My Projects</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <button
+              v-for="project in projectStore.projects"
+              :key="project.id"
+              @click="loadProject(project.id!)"
+              class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow text-left border-2 border-transparent hover:border-blue-500"
+            >
+              <div class="text-3xl mb-2">💾</div>
+              <h3 class="text-lg font-semibold mb-2">{{ project.name }}</h3>
+              <p class="text-sm text-gray-600">{{ project.description || 'No description' }}</p>
+              <p class="text-xs text-gray-400 mt-2">{{ formatDate(project.updatedAt) }}</p>
+            </button>
+          </div>
+        </div>
+
         <h1 class="text-5xl font-bold text-gray-900 mb-4">Create Your Game</h1>
         <p class="text-xl text-gray-600 mb-8">
           Node-based visual scripting. No coding required.
@@ -73,16 +91,24 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from 'vue'
+import { inject, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useEditorStore } from '@/stores/editorStore'
 import { useAuthStore } from '@/stores/authStore'
+import { useProjectStore } from '@/stores/projectStore'
 import { getTemplate, createSimpleExample } from '@/utils/templates'
 
 const router = useRouter()
 const editorStore = useEditorStore()
 const authStore = useAuthStore()
+const projectStore = useProjectStore()
 const openAuthModal = inject<() => void>('openAuthModal')!
+
+onMounted(async () => {
+  if (authStore.isAuthenticated) {
+    await projectStore.fetchProjects()
+  }
+})
 
 async function handleLogout() {
   await authStore.logout()
@@ -113,5 +139,21 @@ function loadTemplate(templateId: string) {
 
   editorStore.loadProject(template)
   router.push('/editor')
+}
+
+async function loadProject(projectId: string) {
+  try {
+    const project = await projectStore.loadProject(projectId)
+    editorStore.loadProject(project)
+    router.push('/editor')
+  } catch (e: any) {
+    alert('Failed to load project: ' + e.message)
+  }
+}
+
+function formatDate(dateString?: string) {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  return date.toLocaleDateString()
 }
 </script>
