@@ -1,8 +1,9 @@
 import type Phaser from 'phaser'
+import type { GameScene } from '@/runtime/GameScene'
 
 // Runtime Context
 export interface RuntimeContext {
-  scene: Phaser.Scene
+  scene: GameScene
   entities: Map<string, Phaser.GameObjects.GameObject>
   variables: Map<string, any>
   deltaTime: number
