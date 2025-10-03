@@ -72,6 +72,15 @@ export const projects = {
     ) as AppwriteProject
   },
 
+  async getBySlug(slug: string) {
+    const response = await databases.listDocuments(
+      config.databaseId,
+      config.projectsCollectionId,
+      [Query.equal('slug', slug), Query.limit(1)]
+    )
+    return response.documents[0] as AppwriteProject | undefined
+  },
+
   async create(project: {
     name: string
     slug: string

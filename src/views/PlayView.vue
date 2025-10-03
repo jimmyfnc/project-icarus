@@ -23,7 +23,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { PhaserGame } from '@/runtime/PhaserGame'
-import { projectService } from '@/appwrite/services'
+import { projects } from '@/services/appwrite'
 import type { GameProject } from '@/types/graph'
 
 const route = useRoute()
@@ -35,7 +35,7 @@ onMounted(async () => {
   const slug = route.params.slug as string
 
   // Load project
-  project.value = await projectService.getBySlug(slug)
+  project.value = await projects.getBySlug(slug)
 
   if (!project.value || !gameContainer.value) {
     alert('Project not found!')
