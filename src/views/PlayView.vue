@@ -35,11 +35,23 @@ onMounted(async () => {
   const slug = route.params.slug as string
 
   // Load project
-  project.value = await projects.getBySlug(slug)
+  const appwriteProject = await projects.getBySlug(slug)
 
-  if (!project.value || !gameContainer.value) {
+  if (!appwriteProject || !gameContainer.value) {
     alert('Project not found!')
     return
+  }
+
+  // Convert AppwriteProject to GameProject
+  project.value = {
+    id: appwriteProject.$id,
+    name: appwriteProject.name,
+    slug: appwriteProject.slug,
+    description: appwriteProject.description,
+    graph: JSON.parse(appwriteProject.graph),
+    createdAt: appwriteProject.$createdAt,
+    updatedAt: appwriteProject.$updatedAt,
+    userId: appwriteProject.userId
   }
 
   // Initialize Phaser game
