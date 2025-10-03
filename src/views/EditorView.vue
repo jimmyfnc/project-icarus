@@ -68,8 +68,8 @@
 
       <!-- Right Sidebar - Properties / Assets -->
       <aside class="w-80 bg-white border-l border-gray-200 overflow-y-auto">
-        <PropertiesPanel v-if="!showAssets" />
-        <AssetManager v-else />
+        <PropertiesPanel v-show="!showAssets" />
+        <AssetManager v-show="showAssets" />
       </aside>
     </div>
   </div>
