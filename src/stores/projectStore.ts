@@ -28,7 +28,8 @@ export const useProjectStore = defineStore('project', () => {
         name: doc.name,
         slug: doc.slug,
         description: doc.description,
-        graph: JSON.parse(doc.graph)
+        graph: JSON.parse(doc.graph),
+        updatedAt: doc.$updatedAt
       }))
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'Failed to fetch projects'

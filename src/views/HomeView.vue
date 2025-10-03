@@ -74,6 +74,33 @@
           <h3 class="text-lg font-semibold mb-2">Platformer</h3>
           <p class="text-sm text-gray-600">Mario-style template</p>
         </button>
+
+        <button
+          @click="loadTemplate('space-shooter')"
+          class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow text-left"
+        >
+          <div class="text-3xl mb-2">🚀</div>
+          <h3 class="text-lg font-semibold mb-2">Space Shooter</h3>
+          <p class="text-sm text-gray-600">Shoot 'em up template</p>
+        </button>
+
+        <button
+          @click="loadTemplate('breakout')"
+          class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow text-left"
+        >
+          <div class="text-3xl mb-2">🧱</div>
+          <h3 class="text-lg font-semibold mb-2">Breakout</h3>
+          <p class="text-sm text-gray-600">Brick breaker template</p>
+        </button>
+
+        <button
+          @click="loadTemplate('tank-wars')"
+          class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow text-left"
+        >
+          <div class="text-3xl mb-2">🎖️</div>
+          <h3 class="text-lg font-semibold mb-2">Tank Wars</h3>
+          <p class="text-sm text-gray-600">Combat template</p>
+        </button>
       </div>
 
       <div class="bg-white rounded-lg shadow-md p-6">
