@@ -30,19 +30,13 @@ export class PhaserGame {
     // Wait for scene to be ready using Phaser lifecycle events
     this.game.events.once('ready', () => {
       this.scene = this.game!.scene.scenes[0] as GameScene
-      
-      if (this.scene) {
-        // Listen for the scene's create event to ensure it's fully initialized
-        this.scene.events.once('create', () => {
-          this.sceneReady = true
-          console.log('PhaserGame: Scene acquired and ready')
+      this.sceneReady = true
+      console.log('PhaserGame: Scene acquired and ready')
 
-          // Apply graph if it was queued
-          if (this.currentGraph && this.scene) {
-            console.log('Applying queued graph with', this.currentGraph.nodes.length, 'nodes')
-            this.scene.setGraph(this.currentGraph)
-          }
-        })
+      // Apply graph if it was queued
+      if (this.currentGraph && this.scene) {
+        console.log('Applying queued graph with', this.currentGraph.nodes.length, 'nodes')
+        this.scene.setGraph(this.currentGraph)
       }
     })
 
