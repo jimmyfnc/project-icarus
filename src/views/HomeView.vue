@@ -144,6 +144,10 @@ function loadTemplate(templateId: string) {
 async function loadProject(projectId: string) {
   try {
     const project = await projectStore.loadProject(projectId)
+    if (!project) {
+      alert('Failed to load project: Project not found')
+      return
+    }
     editorStore.loadProject(project)
     router.push('/editor')
   } catch (e: any) {

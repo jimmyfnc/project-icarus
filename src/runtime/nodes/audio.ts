@@ -7,7 +7,7 @@ NodeRegistry.register({
     type: 'PlaySound',
     label: 'Play Sound',
     category: 'audio',
-    color: '#f59e0b'
+    color: '#8b5cf6'
   },
   inputs: [
     { id: 'exec', name: 'exec', type: 'exec' }
@@ -47,7 +47,7 @@ NodeRegistry.register({
     type: 'StopSound',
     label: 'Stop Sound',
     category: 'audio',
-    color: '#f59e0b'
+    color: '#8b5cf6'
   },
   inputs: [
     { id: 'exec', name: 'exec', type: 'exec' }
@@ -73,7 +73,7 @@ NodeRegistry.register({
     type: 'PlayMusic',
     label: 'Play Music',
     category: 'audio',
-    color: '#f59e0b'
+    color: '#8b5cf6'
   },
   inputs: [
     { id: 'exec', name: 'exec', type: 'exec' }
@@ -112,7 +112,7 @@ NodeRegistry.register({
     type: 'StopMusic',
     label: 'Stop Music',
     category: 'audio',
-    color: '#f59e0b'
+    color: '#8b5cf6'
   },
   inputs: [
     { id: 'exec', name: 'exec', type: 'exec' }
@@ -136,7 +136,7 @@ NodeRegistry.register({
     type: 'SetVolume',
     label: 'Set Volume',
     category: 'audio',
-    color: '#f59e0b'
+    color: '#8b5cf6'
   },
   inputs: [
     { id: 'exec', name: 'exec', type: 'exec' },
