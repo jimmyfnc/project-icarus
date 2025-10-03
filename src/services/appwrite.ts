@@ -138,7 +138,7 @@ export const assets = {
     )
   },
 
-  async list(userId: string) {
+  async list() {
     // Appwrite automatically filters files based on permissions
     // No need to query by $permissions - just list all accessible files
     return await storage.listFiles(config.assetsBucketId)

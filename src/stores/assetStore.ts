@@ -53,7 +53,7 @@ export const useAssetStore = defineStore('asset', () => {
     error.value = null
 
     try {
-      const response = await appwriteAssets.list(authStore.userId)
+      const response = await appwriteAssets.list()
       files.value = response.files
     } catch (e: any) {
       console.error('Failed to fetch assets:', e)
