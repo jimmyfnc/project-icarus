@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject } from 'vue'
+import { ref, inject, markRaw } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useEditorStore } from '@/stores/editorStore'
 import { useProjectStore } from '@/stores/projectStore'
@@ -93,6 +93,10 @@ const authStore = useAuthStore()
 const previewExpanded = ref(false)
 const showAssets = ref(false)
 const openAuthModal = inject<() => void>('openAuthModal')!
+
+// Force AssetManager to be included in build (prevent tree-shaking)
+// @ts-ignore - Intentionally unused to prevent tree-shaking
+const _assetManagerComponent = markRaw(AssetManager)
 
 function togglePreviewSize() {
   previewExpanded.value = !previewExpanded.value
