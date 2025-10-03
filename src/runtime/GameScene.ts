@@ -18,9 +18,106 @@ export class GameScene extends Phaser.Scene {
   private isPlaying = false
   private colliders: Phaser.Physics.Arcade.Collider[] = []
   private collisionHandlers: Map<string, Set<string>> = new Map()
+  
+  // Input manager for tracking key states
+  private previousKeyStates: Map<string, boolean> = new Map()
+  private currentKeyStates: Map<string, boolean> = new Map()
+  
+  // Touch input manager
+  private isTouchActive = false
+  private touchStartPos = { x: 0, y: 0 }
+  private touchCurrentPos = { x: 0, y: 0 }
+  private previousTouchStates: Map<string, boolean> = new Map()
+  private currentTouchStates: Map<string, boolean> = new Map()
+  private swipeDetected = false
+  private swipeDirection: string | null = null
 
   constructor() {
     super({ key: 'GameScene' })
+  }
+  
+  // Check if key was pressed this frame (not held)
+  isKeyJustPressed(key: string): boolean {
+    const current = this.currentKeyStates.get(key) || false
+    const previous = this.previousKeyStates.get(key) || false
+    return current && !previous
+  }
+  
+  // Check if key is currently held down
+  isKeyDown(key: string): boolean {
+    return this.currentKeyStates.get(key) || false
+  }
+  
+  // Check if screen is currently being touched
+  isTouching(): boolean {
+    return this.isTouchActive
+  }
+  
+  // Check if touch just started this frame
+  isTouchJustPressed(): boolean {
+    const current = this.isTouchActive
+    const previous = this.previousTouchStates.get('active') || false
+    return current && !previous
+  }
+  
+  // Get current touch position
+  getTouchPosition(): { x: number; y: number } {
+    return { ...this.touchCurrentPos }
+  }
+  
+  // Check if touch is in a specific zone
+  isTouchingZone(zone: string): boolean {
+    if (!this.isTouchActive) return false
+    
+    const x = this.touchCurrentPos.x
+    const y = this.touchCurrentPos.y
+    const width = 800 // Game width
+    const height = 600 // Game height
+    
+    const leftThird = width / 3
+    const rightThird = (width * 2) / 3
+    const topThird = height / 3
+    const bottomThird = (height * 2) / 3
+    
+    switch (zone) {
+      case 'left':
+        return x < leftThird
+      case 'right':
+        return x > rightThird
+      case 'top':
+        return y < topThird
+      case 'bottom':
+        return y > bottomThird
+      case 'center':
+        return x >= leftThird && x <= rightThird && y >= topThird && y <= bottomThird
+      case 'topleft':
+        return x < leftThird && y < topThird
+      case 'topright':
+        return x > rightThird && y < topThird
+      case 'bottomleft':
+        return x < leftThird && y > bottomThird
+      case 'bottomright':
+        return x > rightThird && y > bottomThird
+      default:
+        return false
+    }
+  }
+  
+  // Check if touch zone was just pressed this frame
+  isTouchZoneJustPressed(zone: string): boolean {
+    const current = this.isTouchingZone(zone)
+    const previous = this.currentTouchStates.get(zone) || false
+    return current && !previous
+  }
+  
+  // Get detected swipe direction
+  getSwipeDirection(): string | null {
+    return this.swipeDirection
+  }
+  
+  // Check if swipe was detected this frame
+  isSwipeDetected(): boolean {
+    return this.swipeDetected
   }
 
   setGraph(graph: GameGraph) {
@@ -77,6 +174,43 @@ export class GameScene extends Phaser.Scene {
     // Generate mock audio sounds
     AudioGenerator.initializeMockSounds(this)
 
+    // Set up touch/pointer input listeners
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      this.isTouchActive = true
+      this.touchStartPos = { x: pointer.x, y: pointer.y }
+      this.touchCurrentPos = { x: pointer.x, y: pointer.y }
+      this.swipeDetected = false
+      this.swipeDirection = null
+    })
+
+    this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+      if (this.isTouchActive) {
+        this.touchCurrentPos = { x: pointer.x, y: pointer.y }
+      }
+    })
+
+    this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+      if (this.isTouchActive) {
+        // Detect swipe
+        const dx = pointer.x - this.touchStartPos.x
+        const dy = pointer.y - this.touchStartPos.y
+        const distance = Math.sqrt(dx * dx + dy * dy)
+        
+        if (distance > 50) { // Minimum swipe distance
+          this.swipeDetected = true
+          
+          // Determine primary swipe direction
+          if (Math.abs(dx) > Math.abs(dy)) {
+            this.swipeDirection = dx > 0 ? 'right' : 'left'
+          } else {
+            this.swipeDirection = dy > 0 ? 'down' : 'up'
+          }
+        }
+      }
+      
+      this.isTouchActive = false
+    })
+
     // Initialize context only if we have a graph
     if (this.graph && this.executor) {
       this.initializeContext()
@@ -102,6 +236,48 @@ export class GameScene extends Phaser.Scene {
 
   update(time: number, delta: number) {
     if (!this.isPlaying || !this.executor || !this.context) return
+
+    // Update input manager - copy current to previous before updating current
+    this.previousKeyStates.clear()
+    this.currentKeyStates.forEach((value, key) => {
+      this.previousKeyStates.set(key, value)
+    })
+    
+    // Update current key states
+    const cursors = this.input.keyboard?.createCursorKeys()
+    if (cursors) {
+      this.currentKeyStates.set('UP', cursors.up.isDown)
+      this.currentKeyStates.set('DOWN', cursors.down.isDown)
+      this.currentKeyStates.set('LEFT', cursors.left.isDown)
+      this.currentKeyStates.set('RIGHT', cursors.right.isDown)
+    }
+    
+    const spaceKey = this.input.keyboard?.addKey('SPACE')
+    if (spaceKey) {
+      this.currentKeyStates.set('SPACE', spaceKey.isDown)
+    }
+
+    // Update touch states - copy current to previous
+    this.previousTouchStates.clear()
+    this.previousTouchStates.set('active', this.isTouchActive)
+    this.currentTouchStates.forEach((value, key) => {
+      this.previousTouchStates.set(key, value)
+    })
+    
+    // Update current touch zone states
+    this.currentTouchStates.clear()
+    if (this.isTouchActive) {
+      const zones = ['left', 'right', 'top', 'bottom', 'center', 'topleft', 'topright', 'bottomleft', 'bottomright']
+      zones.forEach(zone => {
+        this.currentTouchStates.set(zone, this.isTouchingZone(zone))
+      })
+    }
+    
+    // Clear swipe after one frame
+    if (this.swipeDetected) {
+      this.swipeDetected = false
+      this.swipeDirection = null
+    }
 
     // Update context
     this.context.deltaTime = delta

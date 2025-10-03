@@ -54,6 +54,18 @@
         }
       },
       {
+        "id": "on_touch_left",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 350 },
+        "data": {
+          "label": "Touch Left Zone",
+          "properties": {
+            "zone": "left",
+            "mode": "hold"
+          }
+        }
+      },
+      {
         "id": "move_left",
         "type": "Move",
         "position": { "x": 250, "y": 250 },
@@ -78,6 +90,18 @@
         }
       },
       {
+        "id": "on_touch_right",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 470 },
+        "data": {
+          "label": "Touch Right Zone",
+          "properties": {
+            "zone": "right",
+            "mode": "hold"
+          }
+        }
+      },
+      {
         "id": "move_right",
         "type": "Move",
         "position": { "x": 250, "y": 370 },
@@ -98,6 +122,18 @@
           "label": "On Space (Shoot)",
           "properties": {
             "key": "SPACE"
+          }
+        }
+      },
+      {
+        "id": "on_touch_shoot",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 590 },
+        "data": {
+          "label": "Touch Top to Shoot",
+          "properties": {
+            "zone": "top",
+            "mode": "press"
           }
         }
       },
@@ -268,6 +304,13 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e3_touch",
+        "source": "on_touch_left",
+        "sourceHandle": "exec",
+        "target": "move_left",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e4",
         "source": "on_right",
         "sourceHandle": "exec",
@@ -275,8 +318,22 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e4_touch",
+        "source": "on_touch_right",
+        "sourceHandle": "exec",
+        "target": "move_right",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e5",
         "source": "on_space",
+        "sourceHandle": "exec",
+        "target": "spawn_bullet",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5_touch",
+        "source": "on_touch_shoot",
         "sourceHandle": "exec",
         "target": "spawn_bullet",
         "targetHandle": "exec"

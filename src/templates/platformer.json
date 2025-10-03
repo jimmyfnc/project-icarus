@@ -115,6 +115,18 @@
         }
       },
       {
+        "id": "on_touch_left",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 360 },
+        "data": {
+          "label": "Touch Left Zone",
+          "properties": {
+            "zone": "left",
+            "mode": "hold"
+          }
+        }
+      },
+      {
         "id": "move_left",
         "type": "Move",
         "position": { "x": 250, "y": 300 },
@@ -139,6 +151,18 @@
         }
       },
       {
+        "id": "on_touch_right",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 480 },
+        "data": {
+          "label": "Touch Right Zone",
+          "properties": {
+            "zone": "right",
+            "mode": "hold"
+          }
+        }
+      },
+      {
         "id": "move_right",
         "type": "Move",
         "position": { "x": 250, "y": 420 },
@@ -159,6 +183,18 @@
           "label": "On Up Key",
           "properties": {
             "key": "UP"
+          }
+        }
+      },
+      {
+        "id": "on_touch_jump",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 600 },
+        "data": {
+          "label": "Touch Top to Jump",
+          "properties": {
+            "zone": "top",
+            "mode": "press"
           }
         }
       },
@@ -251,6 +287,13 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e7_touch",
+        "source": "on_touch_left",
+        "sourceHandle": "exec",
+        "target": "move_left",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e8",
         "source": "on_right",
         "sourceHandle": "exec",
@@ -258,8 +301,22 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e8_touch",
+        "source": "on_touch_right",
+        "sourceHandle": "exec",
+        "target": "move_right",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e9",
         "source": "on_up",
+        "sourceHandle": "exec",
+        "target": "jump",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e9_touch",
+        "source": "on_touch_jump",
         "sourceHandle": "exec",
         "target": "jump",
         "targetHandle": "exec"

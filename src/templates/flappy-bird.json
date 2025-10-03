@@ -70,6 +70,17 @@
         }
       },
       {
+        "id": "on_touch_jump",
+        "type": "OnTouch",
+        "position": { "x": 50, "y": 400 },
+        "data": {
+          "label": "On Touch (Mobile)",
+          "properties": {
+            "mode": "press"
+          }
+        }
+      },
+      {
         "id": "jump",
         "type": "Impulse",
         "position": { "x": 250, "y": 300 },
@@ -192,6 +203,13 @@
       {
         "id": "e5",
         "source": "on_space",
+        "sourceHandle": "exec",
+        "target": "jump",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e5_touch",
+        "source": "on_touch_jump",
         "sourceHandle": "exec",
         "target": "jump",
         "targetHandle": "exec"

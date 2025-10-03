@@ -8,6 +8,7 @@ export class GraphExecutor {
   private edgeMap: Map<string, GraphEdge[]>
   private startNodes: GraphNode[] = []
   private nodeRuntimes: Map<string, any> = new Map()
+  private executedThisFrame: Set<string> = new Set()
 
   constructor(graph: GameGraph) {
     this.graph = graph
@@ -38,6 +39,9 @@ export class GraphExecutor {
   }
 
   execute(ctx: RuntimeContext) {
+    // Clear execution state for this frame
+    this.executedThisFrame.clear()
+    
     // Execute all event nodes
     this.startNodes.forEach((node) => {
       this.executeNode(node, ctx, {})
@@ -54,6 +58,16 @@ export class GraphExecutor {
       console.warn(`Node type ${node.type} not found in registry`)
       return
     }
+
+    // Skip if this node was already executed this frame (prevents redundant execution)
+    // But allow event nodes to execute multiple times if needed
+    const isEventNode = entry.meta.category === 'event'
+    if (!isEventNode && this.executedThisFrame.has(node.id)) {
+      return
+    }
+    
+    // Mark as executed this frame
+    this.executedThisFrame.add(node.id)
 
     // Attach runtime state to node
     if (!this.nodeRuntimes.has(node.id)) {

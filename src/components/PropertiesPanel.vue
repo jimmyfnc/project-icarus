@@ -43,6 +43,82 @@
           </select>
         </div>
 
+        <!-- OnTouch properties -->
+        <div v-else-if="selectedNode.type === 'OnTouch'" class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">
+            Mode
+          </label>
+          <select
+            v-model="properties.mode"
+            @change="updateProperties"
+            class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+          >
+            <option value="press">Press (tap)</option>
+            <option value="hold">Hold (continuous)</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">
+            Press: Fires once when tapped. Hold: Fires continuously while touching.
+          </p>
+        </div>
+
+        <!-- OnTouchArea properties -->
+        <div v-else-if="selectedNode.type === 'OnTouchArea'" class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">
+            Touch Zone
+          </label>
+          <select
+            v-model="properties.zone"
+            @change="updateProperties"
+            class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+          >
+            <option value="left">Left (Move Left)</option>
+            <option value="right">Right (Move Right)</option>
+            <option value="top">Top (Jump/Shoot)</option>
+            <option value="bottom">Bottom</option>
+            <option value="center">Center</option>
+            <option value="topleft">Top-Left</option>
+            <option value="topright">Top-Right</option>
+            <option value="bottomleft">Bottom-Left</option>
+            <option value="bottomright">Bottom-Right</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">
+            Screen is divided into 9 zones (3x3 grid). Left/Right zones are ideal for movement.
+          </p>
+          
+          <label class="block text-sm font-medium text-gray-700 mt-2">
+            Mode
+          </label>
+          <select
+            v-model="properties.mode"
+            @change="updateProperties"
+            class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+          >
+            <option value="press">Press (tap)</option>
+            <option value="hold">Hold (continuous)</option>
+          </select>
+        </div>
+
+        <!-- OnSwipe properties -->
+        <div v-else-if="selectedNode.type === 'OnSwipe'" class="space-y-2">
+          <label class="block text-sm font-medium text-gray-700">
+            Swipe Direction
+          </label>
+          <select
+            v-model="properties.direction"
+            @change="updateProperties"
+            class="w-full px-3 py-2 border border-gray-300 rounded text-sm"
+          >
+            <option value="any">Any Direction</option>
+            <option value="up">Up</option>
+            <option value="down">Down</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">
+            Detects swipe gestures. Minimum swipe distance: 50 pixels.
+          </p>
+        </div>
+
         <!-- Every properties -->
         <div v-else-if="selectedNode.type === 'Every'" class="space-y-2">
           <label class="block text-sm font-medium text-gray-700">

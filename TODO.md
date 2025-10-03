@@ -2,7 +2,7 @@
 
 This document outlines all areas that need to be fleshed out to move from the current MVP to a production-ready application.
 
-**Last Updated**: 2025-10-02
+**Last Updated**: 2025-10-03
 
 ## ✅ Recently Completed
 
@@ -54,14 +54,13 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - ✅ `src/views/EditorView.vue` - Added template warning banner
 - ✅ `src/types/graph.ts` - Added isTemplate flag
 
-## 🔴 Critical (Required for Production)
-
-### 1. ✅ Fix Entity Reference System (COMPLETED)
-**Status**: COMPLETE - Implemented with EntitySelect component
+### 4. ✅ Fix Entity Reference System (COMPLETED!)
+**Status**: ✅ COMPLETED
 **Priority**: HIGH
 **Effort**: Completed
+**Completed**: 2025-10-02
 
-**Implementation**:
+**What Was Done**:
 - ✅ EntitySelect component with dropdown selector
 - ✅ Dropdown auto-populates from spawned entities
 - ✅ Validation warnings when entity doesn't exist
@@ -74,9 +73,54 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/stores/editorStore.ts` - Added spawnedEntities computed
 - `src/runtime/nodes/world.ts` - Added GetEntity node
 
-## 🟡 Important (Needed for Usability)
+### 5. ✅ Fix localStorage Error Handling (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: CRITICAL
+**Effort**: 2 minutes
+**Completed**: 2025-10-03
 
-### 2. ✅ Implement Cloud Save/Load with Appwrite (COMPLETED!)
+**What Was Done**:
+- ✅ Created `safeParseJSON` helper function with try-catch
+- ✅ Replaced all direct `JSON.parse()` calls with safe helper
+- ✅ Added error logging to console for debugging
+- ✅ Implemented fallback values (`null` for project, `[]` for nodes/edges)
+
+**Files Modified**:
+- `src/stores/editorStore.ts` (lines 13-25)
+
+### 6. ✅ Remove Duplicate Appwrite Configuration (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: CRITICAL
+**Effort**: 5 minutes
+**Completed**: 2025-10-03
+
+**What Was Done**:
+- ✅ Verified no imports from old `@/appwrite/` directory
+- ✅ Deleted entire `src/appwrite/` directory
+- ✅ Consolidated to use only `src/services/appwrite.ts`
+- ✅ Confirmed app uses correct configuration
+
+**Files Deleted**:
+- `src/appwrite/config.ts`
+- `src/appwrite/services.ts`
+
+### 7. ✅ Fix PhaserGame Race Condition (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: CRITICAL
+**Effort**: 15 minutes
+**Completed**: 2025-10-03
+
+**What Was Done**:
+- ✅ Replaced hardcoded `setTimeout(200ms)` with proper Phaser lifecycle events
+- ✅ Used `game.events.once('ready', ...)` to detect when game is initialized
+- ✅ Used `scene.events.once('create', ...)` to detect when scene is fully ready
+- ✅ Implemented proper scene ready detection with event-based approach
+- ✅ More reliable on slow devices - waits for actual events instead of arbitrary timeout
+
+**Files Modified**:
+- `src/runtime/PhaserGame.ts` (lines 28-46)
+
+### 8. ✅ Implement Cloud Save/Load with Appwrite (COMPLETED!)
 **Status**: ✅ Fully Implemented & Deployed
 **Completed**: 2025-10-02
 **Priority**: HIGH
@@ -113,7 +157,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - ✅ Environment variables configured
 - ✅ Successfully tested cloud save/load
 
-### 5. ✅ Add Asset Upload System (COMPLETED!)
+### 9. ✅ Add Asset Upload System (COMPLETED!)
 **Status**: ✅ Fully Implemented & Deployed
 **Completed**: 2025-10-02
 **Priority**: MEDIUM
@@ -141,29 +185,38 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - ✅ `src/views/EditorView.vue` - Added Assets toggle button
 - ✅ `src/services/appwrite.ts` - Added Storage SDK and asset CRUD
 
-### 6. Improve Node Execution Flow
-**Status**: Basic execution only
+## 🔴 Critical (Required for Production)
+
+No critical items remaining! All critical code review issues have been resolved.
+
+## 🟡 Important (Needed for Usability)
+
+### 1. ✅ Improve Node Execution Flow (COMPLETED!)
+**Status**: ✅ COMPLETED
 **Priority**: MEDIUM
 **Effort**: 2-3 hours
+**Completed**: 2025-10-03
 
-**Current Issues**:
-- Event nodes execute every frame (inefficient)
-- Key events don't have proper "pressed this frame" logic
-- Timer nodes don't clean up properly
+**What Was Done**:
+- ✅ Added execution state tracking to prevent redundant execution within same frame
+- ✅ Implemented proper key press detection (down vs held) with input manager
+- ✅ Fixed timer nodes to track last execution properly
+- ✅ Added "once" flag for one-time timer events
+- ✅ Optimized execution to skip non-event nodes already executed this frame
 
-**Tasks**:
-- [ ] Add execution state (executed this frame)
-- [ ] Implement proper key press detection (down vs held)
-- [ ] Fix timer nodes to track last execution
-- [ ] Add "once" flag for one-time events
-- [ ] Optimize execution to skip unchanged branches
+**Implementation Details**:
+- **Input Manager**: Added `previousKeyStates` and `currentKeyStates` to GameScene
+- **Key Detection**: Added `isKeyJustPressed()` (pressed this frame) and `isKeyDown()` (held)
+- **OnKey Node**: Added `mode` property ('press' or 'hold') for different key detection modes
+- **Every Node**: Added `once` property and proper `hasRun` tracking
+- **GraphExecutor**: Added `executedThisFrame` Set to prevent redundant execution
 
-**Files to Modify**:
-- `src/runtime/GraphExecutor.ts` - Add execution state
-- `src/runtime/nodes/events.ts` - Fix key detection
-- `src/runtime/GameScene.ts` - Add input manager
+**Files Modified**:
+- `src/runtime/GraphExecutor.ts` - Added execution state tracking
+- `src/runtime/nodes/events.ts` - Fixed key detection and timer logic
+- `src/runtime/GameScene.ts` - Added input manager with key state tracking
 
-### 7. Add Visual Feedback & Debugging
+### 2. Add Visual Feedback & Debugging
 **Status**: None
 **Priority**: MEDIUM
 **Effort**: 2-3 hours
@@ -185,7 +238,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 
 ## 🟢 Nice to Have (Polish & Features)
 
-### 8. Add More Node Types
+### 3. Add More Node Types
 **Priority**: LOW
 **Effort**: 1-2 hours each
 
@@ -222,7 +275,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/runtime/nodes/math.ts`
 - `src/runtime/nodes/time.ts`
 
-### 9. Improve Editor UX
+### 4. Improve Editor UX
 **Priority**: LOW
 **Effort**: 4-5 hours
 
@@ -243,7 +296,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/components/GraphCanvas.vue` - Add shortcuts
 - `src/components/NodePalette.vue` - Add search
 
-### 10. Add More Templates
+### 5. Add More Templates
 **Priority**: LOW
 **Effort**: 1-2 hours each
 
@@ -261,7 +314,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/templates/shooter.json`
 - etc.
 
-### 11. Improve Play Mode
+### 6. Improve Play Mode
 **Priority**: LOW
 **Effort**: 2-3 hours
 
@@ -279,7 +332,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/views/PlayView.vue` - Add controls
 - `src/runtime/GameScene.ts` - Add input methods
 
-### 12. Add Export Functionality
+### 7. Add Export Functionality
 **Priority**: LOW
 **Effort**: 3-4 hours
 
@@ -296,7 +349,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 
 ## 🔧 Technical Debt & Improvements
 
-### 13. Add Testing
+### 8. Add Testing
 **Priority**: MEDIUM
 **Effort**: 8-10 hours
 
@@ -314,7 +367,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `tests/integration/executor.test.ts`
 - `tests/e2e/editor.spec.ts`
 
-### 14. Performance Optimization
+### 9. Performance Optimization
 **Priority**: LOW
 **Effort**: 2-3 hours
 
@@ -330,7 +383,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/runtime/GraphExecutor.ts`
 - `src/components/GraphCanvas.vue`
 
-### 15. Error Handling & Validation
+### 10. Error Handling & Validation
 **Priority**: MEDIUM
 **Effort**: 2-3 hours
 
@@ -346,7 +399,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `src/runtime/GraphExecutor.ts` - Add validation
 - `src/stores/editorStore.ts` - Validate on add edge
 
-### 16. Documentation Improvements
+### 11. Documentation Improvements
 **Priority**: LOW
 **Effort**: 2-3 hours
 
@@ -363,7 +416,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - `docs/node-reference.md`
 - `docs/api.md`
 
-### 17. Accessibility
+### 12. Accessibility
 **Priority**: LOW
 **Effort**: 2-3 hours
 
@@ -378,7 +431,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 **Files to Modify**:
 - All Vue components
 
-### 18. Mobile Support
+### 13. Mobile Support
 **Priority**: LOW
 **Effort**: 4-5 hours
 
@@ -398,14 +451,14 @@ This document outlines all areas that need to be fleshed out to move from the cu
 ## 📊 Priority Matrix
 
 ### Do First (This Week)
-1. Fix collision detection ⭐⭐⭐
-2. Implement physics body config ⭐⭐⭐
-3. Fix entity reference system ⭐⭐⭐
-4. Wire up save/load UI ⭐⭐
+1. ✅ Fix collision detection ⭐⭐⭐
+2. ✅ Implement physics body config ⭐⭐⭐
+3. ✅ Fix entity reference system ⭐⭐⭐
+4. ✅ Wire up save/load UI ⭐⭐
 
 ### Do Next (Next Week)
-5. Add asset upload system ⭐⭐
-6. Improve node execution flow ⭐⭐
+5. ✅ Add asset upload system ⭐⭐
+6. ✅ Improve node execution flow ⭐⭐
 7. Add visual feedback ⭐⭐
 8. Error handling & validation ⭐⭐
 
@@ -456,21 +509,33 @@ Day 6-7: Documentation & deployment
 
 ## 📝 Notes
 
-### Quick Wins (< 1 hour each)
-- Add console.log node for debugging
-- Add random number node
-- Add delay node
-- Fix template loading in HomeView
-- Add keyboard shortcut for play/stop
-- Add project name in header
-- Add "New Project" button in editor
+### ⚡ Quick Wins (< 1 hour each)
+**Code Review Fixes**:
+- [x] Fix localStorage error handling (2 min) ✅
+- [x] Remove duplicate Appwrite config (5 min) ✅
+- [x] Fix PhaserGame race condition (15 min) ✅
+- [ ] Add debouncing to auto-save (15 min)
+- [ ] Centralize asset URLs (15 min)
+- [ ] Extract magic numbers (30 min)
+- [ ] Standardize error handling (30 min)
 
-### Known Bugs to Fix
+**Feature Additions**:
+- [ ] Add console.log node for debugging
+- [ ] Add random number node
+- [ ] Add delay node
+- [ ] Fix template loading in HomeView
+- [ ] Add keyboard shortcut for play/stop
+- [ ] Add project name in header
+- [ ] Add "New Project" button in editor
+
+### 🐛 Known Bugs to Fix
 - [ ] Phaser game not resizing properly
 - [ ] Node position not saving correctly
 - [ ] Edge deletion sometimes doesn't work
 - [ ] Properties panel not updating on node change
 - [ ] Template images (bird, player) need proper sprites
+- [x] **localStorage crashes on corrupted data** ✅ (FIXED)
+- [x] **Race condition in Phaser init** ✅ (FIXED)
 
 ### Feature Requests from Users
 - Multiplayer support (complex, 2-3 weeks)
@@ -502,14 +567,31 @@ If you only have time for hackathon submission, focus on these:
 ## 📦 Production Checklist
 
 Before deploying to production:
+
+**🔴 Critical (Code Review)**:
+- [x] localStorage error handling fixed ✅
+- [x] Duplicate Appwrite config removed ✅
+- [x] PhaserGame race condition fixed ✅
+- [ ] Error handling standardized
+- [ ] Type safety implemented (no 'as any')
+
+**🟡 Important (Features)**:
+- [x] Save/load working with Appwrite ✅
+- [x] At least 3 working templates ✅
 - [ ] All critical issues fixed
-- [ ] Save/load working with Appwrite
-- [ ] At least 3 working templates
 - [ ] Basic error handling in place
 - [ ] No console errors
+- [ ] Node property validation
+
+**🟢 Polish**:
 - [ ] Mobile-responsive
+- [ ] Toast notifications (no alert())
 - [ ] Documentation complete
 - [ ] Demo video recorded
+- [ ] Unit tests written
+- [ ] Performance optimized
+
+**📢 Marketing**:
 - [ ] Privacy policy & terms (if collecting data)
 - [ ] Analytics set up
 - [ ] SEO optimized
@@ -517,11 +599,23 @@ Before deploying to production:
 
 ## 💡 Tips
 
-- **Start small**: Fix collision first, everything else builds on it
+**Code Quality First**:
+- **Fix critical bugs ASAP**: 22 minutes can prevent hours of debugging
+- **Type safety matters**: Remove `as any` to catch bugs at compile time
+- **Validate early**: Check node properties before execution, not during
+- **Standard patterns**: Consistent error handling makes debugging easier
+
+**Development Best Practices**:
+- **Start small**: Fix localStorage first, everything else builds on it
 - **Test often**: Run preview after every change
 - **Use templates**: Test fixes with existing templates
 - **Document as you go**: Update docs when adding features
 - **Get feedback**: Share with friends early
+
+**Performance Tips**:
+- **Debounce auto-save**: Reduce unnecessary localStorage writes
+- **Cache node outputs**: Prevent redundant calculations
+- **Index by tag**: O(1) lookups instead of O(n) iterations
 
 ## 🤝 Community Contributions
 

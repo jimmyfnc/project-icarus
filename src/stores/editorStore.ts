@@ -9,10 +9,21 @@ export const useEditorStore = defineStore('editor', () => {
   const savedNodes = localStorage.getItem('currentNodes')
   const savedEdges = localStorage.getItem('currentEdges')
 
+  // Helper function to safely parse JSON from localStorage
+  function safeParseJSON<T>(jsonString: string | null, fallback: T): T {
+    if (!jsonString) return fallback
+    try {
+      return JSON.parse(jsonString)
+    } catch (error) {
+      console.error('Failed to parse localStorage data:', error)
+      return fallback
+    }
+  }
+
   // State
-  const currentProject = ref<GameProject | null>(savedProject ? JSON.parse(savedProject) : null)
-  const nodes = ref<GraphNode[]>(savedNodes ? JSON.parse(savedNodes) : [])
-  const edges = ref<GraphEdge[]>(savedEdges ? JSON.parse(savedEdges) : [])
+  const currentProject = ref<GameProject | null>(safeParseJSON(savedProject, null))
+  const nodes = ref<GraphNode[]>(safeParseJSON(savedNodes, []))
+  const edges = ref<GraphEdge[]>(safeParseJSON(savedEdges, []))
   const selectedNode = ref<GraphNode | null>(null)
   const isPlaying = ref(false)
   const debugMode = ref(false)

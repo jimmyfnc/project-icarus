@@ -339,6 +339,18 @@
         }
       },
       {
+        "id": "on_touch_left",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 760 },
+        "data": {
+          "label": "Touch Left Zone",
+          "properties": {
+            "zone": "left",
+            "mode": "hold"
+          }
+        }
+      },
+      {
         "id": "move_paddle_left",
         "type": "Move",
         "position": { "x": 250, "y": 700 },
@@ -359,6 +371,18 @@
           "label": "On Right Key",
           "properties": {
             "key": "RIGHT"
+          }
+        }
+      },
+      {
+        "id": "on_touch_right",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 880 },
+        "data": {
+          "label": "Touch Right Zone",
+          "properties": {
+            "zone": "right",
+            "mode": "hold"
           }
         }
       },
@@ -591,8 +615,22 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e20_touch",
+        "source": "on_touch_left",
+        "sourceHandle": "exec",
+        "target": "move_paddle_left",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e21",
         "source": "on_right",
+        "sourceHandle": "exec",
+        "target": "move_paddle_right",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e21_touch",
+        "source": "on_touch_right",
         "sourceHandle": "exec",
         "target": "move_paddle_right",
         "targetHandle": "exec"

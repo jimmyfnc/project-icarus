@@ -110,6 +110,18 @@
         }
       },
       {
+        "id": "on_touch_shoot_1",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 360 },
+        "data": {
+          "label": "Touch Left to Shoot",
+          "properties": {
+            "zone": "left",
+            "mode": "press"
+          }
+        }
+      },
+      {
         "id": "check_turn_1",
         "type": "CheckVariable",
         "position": { "x": 250, "y": 300 },
@@ -196,6 +208,18 @@
           "label": "On Enter (AI Turn)",
           "properties": {
             "key": "ENTER"
+          }
+        }
+      },
+      {
+        "id": "on_touch_shoot_2",
+        "type": "OnTouchArea",
+        "position": { "x": 50, "y": 560 },
+        "data": {
+          "label": "Touch Right to Shoot AI",
+          "properties": {
+            "zone": "right",
+            "mode": "press"
           }
         }
       },
@@ -426,6 +450,13 @@
         "targetHandle": "exec"
       },
       {
+        "id": "e7_touch",
+        "source": "on_touch_shoot_1",
+        "sourceHandle": "exec",
+        "target": "check_turn_1",
+        "targetHandle": "exec"
+      },
+      {
         "id": "e8",
         "source": "check_turn_1",
         "sourceHandle": "true",
@@ -477,6 +508,13 @@
       {
         "id": "e13",
         "source": "on_enter_shoot_tank2",
+        "sourceHandle": "exec",
+        "target": "check_turn_2",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e13_touch",
+        "source": "on_touch_shoot_2",
         "sourceHandle": "exec",
         "target": "check_turn_2",
         "targetHandle": "exec"
