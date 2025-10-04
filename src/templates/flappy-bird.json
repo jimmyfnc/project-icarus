@@ -187,7 +187,7 @@
       },
       {
         "id": "collide_bird_pipe",
-        "type": "OnCollideTag",
+        "type": "OnCollideWithTag",
         "position": { "x": 50, "y": 700 },
         "data": {
           "label": "Bird-Pipe Collision",
