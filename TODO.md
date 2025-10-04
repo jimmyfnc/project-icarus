@@ -138,6 +138,7 @@ This document outlines all areas that need to be fleshed out to move from the cu
 - ✅ Deploy to production at Appwrite Sites
 - ✅ Fix TypeScript build errors
 - ✅ Add bundle optimization (code splitting)
+- ✅ Fixed updatedAt field mapping in projectStore
 
 **Files Created**:
 - ✅ `src/stores/authStore.ts` - User authentication state
@@ -146,8 +147,8 @@ This document outlines all areas that need to be fleshed out to move from the cu
 
 **Files Modified**:
 - ✅ `src/views/EditorView.vue` - Wire up save button with auth check
-- ✅ `src/views/HomeView.vue` - Added projects list and auth UI
-- ✅ `src/stores/projectStore.ts` - Implemented all API calls
+- ✅ `src/views/HomeView.vue` - Added projects list and auth UI, added all 6 template buttons
+- ✅ `src/stores/projectStore.ts` - Implemented all API calls, fixed updatedAt mapping
 - ✅ `src/App.vue` - Auth initialization on mount
 - ✅ `vite.config.ts` - Added code splitting for better performance
 
@@ -216,7 +217,64 @@ No critical items remaining! All critical code review issues have been resolved.
 - `src/runtime/nodes/events.ts` - Fixed key detection and timer logic
 - `src/runtime/GameScene.ts` - Added input manager with key state tracking
 
-### 2. Add Visual Feedback & Debugging
+### 2. ✅ Touch Controls & Mobile Input (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: MEDIUM
+**Effort**: 3-4 hours
+**Completed**: 2025-10-03
+
+**What Was Done**:
+- ✅ Added OnTouch event node with 3 modes (press, hold, swipe)
+- ✅ Implemented touch tracking in GameScene (start, current, end positions)
+- ✅ Added swipe gesture detection (up, down, left, right)
+- ✅ Integrated touch controls into Flappy Bird template
+- ✅ Added proper touch state management with frame-by-frame tracking
+
+**Files Modified**:
+- `src/runtime/nodes/events.ts` - Added OnTouch node
+- `src/runtime/GameScene.ts` - Touch input tracking and swipe detection
+- `src/templates/flappy-bird.json` - Added touch jump control
+
+### 3. ✅ Scene Initialization Fix (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: CRITICAL
+**Effort**: 30 minutes
+**Completed**: 2025-10-04
+
+**What Was Done**:
+- ✅ Fixed race condition where scene.events.once('create') was registered too late
+- ✅ Templates now properly initialize and run on load
+- ✅ Removed nested event listener that was never firing
+- ✅ Simplified initialization to use only 'ready' event
+
+**Files Modified**:
+- `src/runtime/PhaserGame.ts` - Removed nested 'create' listener, fixed timing
+
+### 4. ✅ Game Templates Expansion (COMPLETED!)
+**Status**: ✅ COMPLETED
+**Priority**: MEDIUM
+**Effort**: 4-5 hours
+**Completed**: 2025-10-03 - 2025-10-04
+
+**What Was Done**:
+- ✅ Created Space Shooter template
+- ✅ Created Breakout template
+- ✅ Created Tank Wars template
+- ✅ Added collision detection to Flappy Bird (bird-pipe, bird-ground)
+- ✅ Added game over text nodes to Flappy Bird
+- ✅ Added all template buttons to HomeView (6 total templates)
+
+**Files Created**:
+- `src/templates/space-shooter.json` - Space shooter game template
+- `src/templates/breakout.json` - Breakout/brick breaker template
+- `src/templates/tank-wars.json` - Tank combat template
+
+**Files Modified**:
+- `src/templates/flappy-bird.json` - Added OnCollideTag and ShowText nodes
+- `src/views/HomeView.vue` - Added buttons for all 6 templates
+- `src/utils/templates.ts` - Already imports all templates
+
+### 5. Add Visual Feedback & Debugging
 **Status**: None
 **Priority**: MEDIUM
 **Effort**: 2-3 hours
@@ -238,18 +296,18 @@ No critical items remaining! All critical code review issues have been resolved.
 
 ## 🟢 Nice to Have (Polish & Features)
 
-### 3. Add More Node Types
+### 6. Add More Node Types
 **Priority**: LOW
 **Effort**: 1-2 hours each
 
 **Audio Nodes**:
-- [ ] PlaySound (with volume, loop)
+- [x] PlaySound (with volume, loop) ✅ Already implemented
 - [ ] StopSound
 - [ ] PlayMusic
 - [ ] SetVolume
 
 **UI Nodes**:
-- [ ] ShowText (display text on screen)
+- [x] ShowText (display text on screen) ✅ Already implemented
 - [ ] ShowScore
 - [ ] Button (clickable UI element)
 - [ ] Health Bar
