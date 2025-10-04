@@ -169,6 +169,48 @@
             "entityB": "ground"
           }
         }
+      },
+      {
+        "id": "game_over_text",
+        "type": "ShowText",
+        "position": { "x": 250, "y": 600 },
+        "data": {
+          "label": "Show Game Over",
+          "properties": {
+            "text": "GAME OVER!",
+            "x": 400,
+            "y": 300,
+            "fontSize": 48,
+            "color": "#ff0000"
+          }
+        }
+      },
+      {
+        "id": "collide_bird_pipe",
+        "type": "OnCollideTag",
+        "position": { "x": 50, "y": 700 },
+        "data": {
+          "label": "Bird-Pipe Collision",
+          "properties": {
+            "entity": "bird",
+            "tag": "pipe"
+          }
+        }
+      },
+      {
+        "id": "game_over_pipe_text",
+        "type": "ShowText",
+        "position": { "x": 250, "y": 700 },
+        "data": {
+          "label": "Show Game Over (Pipe)",
+          "properties": {
+            "text": "GAME OVER!",
+            "x": 400,
+            "y": 300,
+            "fontSize": 48,
+            "color": "#ff0000"
+          }
+        }
       }
     ],
     "edges": [
@@ -241,6 +283,20 @@
         "sourceHandle": "entity",
         "target": "move_pipe_top",
         "targetHandle": "entity"
+      },
+      {
+        "id": "e9",
+        "source": "collide_bird_ground",
+        "sourceHandle": "exec",
+        "target": "game_over_text",
+        "targetHandle": "exec"
+      },
+      {
+        "id": "e10",
+        "source": "collide_bird_pipe",
+        "sourceHandle": "exec",
+        "target": "game_over_pipe_text",
+        "targetHandle": "exec"
       }
     ]
   }
